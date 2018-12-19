@@ -11,12 +11,15 @@ defmodule IndiecampersWeb.HighlightView do
   end
 
   def render("highlight.json", %{highlight: highlight}) do
-    %{id: highlight.id,
+    %{
       name: highlight.name,
       latitude: highlight.latitude,
       longitude: highlight.longitude,
       address: highlight.address,
       city: highlight.city,
-      website: highlight.website}
+      website: highlight.website,
+      country: highlight.country,
+      description: highlight.description
+    }
   end
 end

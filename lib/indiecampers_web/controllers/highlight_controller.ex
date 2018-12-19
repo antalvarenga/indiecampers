@@ -5,10 +5,15 @@ defmodule IndiecampersWeb.HighlightController do
   alias Indiecampers.App.Highlight
   alias Indiecampers.App.HighlightCalculator
 
+  @api_key Application.get_env(:indiecampers, :gcp_api_key)
+
   action_fallback IndiecampersWeb.FallbackController
 
   # Search by fastest route on Google maps
   def index(conn, params) do
+    IO.puts("API KEY")
+    IO.inspect(@api_key)
+
     poi_or_pois =
       if Map.has_key?(params, "origin") and Map.has_key?(params, "destination") do
         origin = params["origin"]
@@ -18,7 +23,7 @@ defmodule IndiecampersWeb.HighlightController do
           HTTPoison.get!(
             "https://maps.googleapis.com/maps/api/directions/json?origin=#{origin}&destination=#{
               destination
-            }&key=AIzaSyCJA3klnvwU6gxYVk-JFFCv2G08IQgKvA0"
+            }&key=#{@api_key}"
           )
 
         # IO.puts(

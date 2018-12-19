@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :indiecampers,
-  ecto_repos: [Indiecampers.Repo]
+  ecto_repos: [Indiecampers.Repo],
+  gcp_api_key: System.get_env("INDIECAMPERS_GCP_API_KEY")
 
 # Configures the endpoint
 config :indiecampers, IndiecampersWeb.Endpoint,

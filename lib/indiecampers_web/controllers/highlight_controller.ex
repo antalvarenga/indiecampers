@@ -11,9 +11,6 @@ defmodule IndiecampersWeb.HighlightController do
 
   # Search by fastest route on Google maps
   def index(conn, params) do
-    IO.puts("API KEY")
-    IO.inspect(@api_key)
-
     poi_or_pois =
       if Map.has_key?(params, "origin") and Map.has_key?(params, "destination") do
         origin = params["origin"]
@@ -26,29 +23,13 @@ defmodule IndiecampersWeb.HighlightController do
             }&key=#{@api_key}"
           )
 
-        # IO.puts(
-        #   "============================================= response ============================================="
-        # )
-        # 
-        # IO.inspect(response)
         decoded_response = Jason.decode(response.body)
-
-        IO.puts(
-          "============================================= decoded response ============================================="
-        )
-
         pois = HighlightCalculator.get_route_pois(decoded_response)
         render(conn, "index.json", highlights: pois)
       else
         poi = HighlightCalculator.get_closest_poi(params["longitude"], params["latitude"])
         render(conn, "show.json", highlight: poi)
       end
-  end
-
-  # Search the nearest POI from a geo point.
-  def index(conn, %{"longitude" => longitude, "latitude" => latitude} = _params) do
-    poi = HighlightCalculator.get_closest_poi(longitude, latitude)
-    render(conn, "index.json", highlights: poi)
   end
 
   def create(conn, %{"highlight" => highlight_params}) do
